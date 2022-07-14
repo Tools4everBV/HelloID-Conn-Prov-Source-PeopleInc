@@ -32,8 +32,6 @@
 
 _HelloID-Conn-Prov-Source-PeopleInc_ is a _source_ connector. PeopleInc provides a set of REST API's that allow you to programmatically interact with it's data.
 
-> https://mijn.basisurl.nl/PSPGetViewData/Data/GetViews
-
 ## Getting started
 
 In order to use the API, a view must be created within PeopleInc. A view specifies which data will be returned. To get a list of all available views, a HTTP: GET must be executed to: https://mijn.{environment-name}.nl/PSPGetViewData/Data/GetViews
