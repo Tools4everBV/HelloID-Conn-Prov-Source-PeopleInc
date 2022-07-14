@@ -1,0 +1,42 @@
+[
+    {
+        "key": "PSPViewName",
+        "type": "input",
+        "defaultValue": "",
+        "templateOptions": {
+            "label": "PSPViewName",
+            "description": "The name of the view that will be read",
+            "required": true
+        }
+    },
+    {
+        "key": "PSPToken",
+        "type": "input",
+        "defaultValue": "",
+        "templateOptions": {
+            "type": "password",
+            "label": "PSPToken",
+            "required": true
+        }
+    },
+    {
+        "key": "BaseUrl",
+        "type": "input",
+        "defaultValue": "",
+        "templateOptions": {
+            "label": "BaseUrl",
+            "description": "The URL to the API.",
+            "required": true
+        }
+    },
+    {
+        "key": "IsDebug",
+        "type": "checkbox",
+        "defaultValue": true,
+        "templateOptions": {
+          "label": "Toggle debug logging",
+          "description": "When toggled, debug logging will be displayed",
+          "required": false
+        }
+    }
+]
