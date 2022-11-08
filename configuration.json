@@ -1,21 +1,41 @@
 [
     {
-        "key": "PSPViewName",
-        "type": "input",
-        "defaultValue": "",
-        "templateOptions": {
-            "label": "PSPViewName",
-            "description": "The name of the view that will be read",
-            "required": true
-        }
-    },
-    {
         "key": "PSPToken",
         "type": "input",
         "defaultValue": "",
         "templateOptions": {
             "type": "password",
             "label": "PSPToken",
+            "required": true
+        }
+    },
+    {
+        "key": "EmployeeView",
+        "type": "input",
+        "defaultValue": "",
+        "templateOptions": {
+            "label": "EmployeeView",
+            "description": "he name of the view that well be used for employees",
+            "required": true
+        }
+    },
+    {
+        "key": "ContractView",
+        "type": "input",
+        "defaultValue": "",
+        "templateOptions": {
+            "label": "ContractView",
+            "description": "The name of the view that well be used for contracts",
+            "required": true
+        }
+    },
+    {
+        "key": "DepartmentView",
+        "type": "input",
+        "defaultValue": "",
+        "templateOptions": {
+            "label": "DepartmentView",
+            "description": "The name of the view that well be used for departments",
             "required": true
         }
     },
@@ -34,9 +54,9 @@
         "type": "checkbox",
         "defaultValue": true,
         "templateOptions": {
-          "label": "Toggle debug logging",
-          "description": "When toggled, debug logging will be displayed",
-          "required": false
+            "label": "Toggle debug logging",
+            "description": "When toggled, debug logging will be displayed",
+            "required": false
         }
     }
 ]
