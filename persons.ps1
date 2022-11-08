@@ -40,26 +40,39 @@ function Resolve-HTTPError {
 #endregion
 
 try {
-    Write-Verbose 'Retrieving employee information'
+    Write-Verbose 'Adding authorization headers'
     $headers = [System.Collections.Generic.Dictionary[string, string]]::new()
-    $headers.Add("PSPToken", $($config.PSPToken))
-    $headers.Add("PSPViewName", $($config.PSPViewName))
+    $headers.Add('PSPToken', $($config.PSPToken))
+    $headers.Add('Accept', 'application/json')
+    $headers.Add('PSPViewName', $($config.EmployeeView))
 
     $splatParams = @{
         Uri     = "$($config.BaseUrl)/PSPGetViewData/Data/GetViewData"
         Method  = 'GET'
         Headers = $headers
     }
-    $persons = Invoke-RestMethod @splatParams -Verbose:$false
+
+    Write-Verbose "Getting employee data from view: [$($config.EmployeeView)]"
+    $employees = Invoke-RestMethod @splatParams -Verbose:$false
+    $activeEmployees = $employees.foreach({$_ | Where-Object {$_.werknemerid -ne ""}})
+
+    Write-Verbose "Getting contract data from view: [$($config.ContractView)]"
+    $headers['PSPViewName'] = $($config.ContractView)
+    $contracts = Invoke-RestMethod @splatParams -Verbose:$false
 
     Write-Verbose 'Importing raw data in HelloID'
-    foreach ($person in $persons ) {
-        $person | Add-Member -NotePropertyMembers @{ ExternalId = $person.werknemerid }
-        $person | Add-Member -NotePropertyMembers @{ DisplayName = "$($person.roepnaam) $($person.achternaam)".trim(' ') }
-        $person | Add-Member -NotePropertyMembers @{ Contracts = [System.Collections.Generic.List[Object]]::new() }
+    $contractsLookupTable = $contracts | Group-Object -Property werknemerid -AsHashTable -AsString
+    $activeEmployees.ForEach({
 
-        Write-Output $person | ConvertTo-Json -Depth 10
-    }
+        $contractList = [System.Collections.Generic.List[Object]]::new()
+        $contractList.AddRange($contractsLookupTable[$employee.werknemerid])
+
+        $_ | Add-Member -MemberType NoteProperty -Name ExternalId -Value $_.werknemerid
+        $_ | Add-Member -MemberType NoteProperty -Name DisplayName -Value $_.red_samengesteldenaam
+        $_ | Add-Member -MemberType NoteProperty -Name Contracts -Value $contractList
+
+        Write-Output $_ | ConvertTo-Json -Depth 10
+    })
 } catch {
     $ex = $PSItem
     if ($($ex.Exception.GetType().FullName -eq 'Microsoft.PowerShell.Commands.HttpResponseException') -or
